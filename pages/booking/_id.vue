@@ -89,6 +89,7 @@
         </v-row>
       </v-form>
     </v-card>
+    <Loader v-if="loading" :loading="loading" />
   </div>
 </template>
 
