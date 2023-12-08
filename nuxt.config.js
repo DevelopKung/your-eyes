@@ -6,7 +6,7 @@ let base_url = process.env.NODE_ENV == 'development' ? '/' : process.env.GITPAGE
 export default {
   publicRuntimeConfig: {
     myApp: {
-      version: "1.0.0"
+      version: process.env.VERSION
     }
   },
 
