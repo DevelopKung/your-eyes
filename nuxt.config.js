@@ -1,6 +1,6 @@
 import colors from 'vuetify/es5/util/colors'
 const env = require('dotenv').config()
-let url_api = process.env.URL_API;
+let url_api = process.env.NODE_ENV == 'development' ? process.env.URL_API_DEV : process.env.URL_API;
 let base_url = process.env.NODE_ENV == 'development' ? '/' : process.env.GITPAGES_NAME
 
 export default {
@@ -24,7 +24,7 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600&display=swap' }
     ],
     script: [
@@ -87,12 +87,12 @@ export default {
         endpoints: {
           login: {
             // headers: { 'Content-Type': 'multipart/form-data' },
-            url: '/api/auth/token',
+            url: `api/auth/token`,
             method: 'post',
             propertyName: 'payload.token'
           },
           user: {
-            url: '/api/auth/user',
+            url: `api/auth/user`,
             method: 'get',
             propertyName: 'payload.member'
           }
@@ -104,8 +104,6 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     baseURL: base_url,
-    proxyHeaders: false,
-    credentials: false,
     proxy: true
   },
 
@@ -178,6 +176,6 @@ export default {
   },
 
   server: {
-    port: process.env.PORT
+    port: process.env.PORT || 3000
   }
 }

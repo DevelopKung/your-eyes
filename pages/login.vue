@@ -33,23 +33,8 @@ export default {
       show_pwd: false,
       loading: false,
       valid_login: true,
-      valid_register: true,
       requireRules: [v => !!v || 'กรุณากรอกข้อมูล'],
-      member: {
-        username: "admin",
-        password: "1234"
-      },
-      form_regis: {
-        first_name: "",
-        last_name: "",
-        username: "",
-        password: "",
-        sex: "male"
-      },
-      sexs: [
-        { text: 'ชาย', value: 'male'},
-        { text: 'หญิง', value: 'female'}
-      ],
+      member: { username: "amy-npr", password: "1234" },
       show_login: true,
     }
   },
