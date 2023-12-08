@@ -34,7 +34,7 @@ export default {
       loading: false,
       valid_login: true,
       requireRules: [v => !!v || 'กรุณากรอกข้อมูล'],
-      member: { username: "amy-npr", password: "1234" },
+      member: { username: "", password: "" },
       show_login: true,
     }
   },
