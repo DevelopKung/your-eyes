@@ -72,7 +72,7 @@ export const actions = {
     try {
       const url = routeAPI.lists.delete.replace('{:id}', id);
       let config = { headers: { Authorization: this.$auth.getToken('local') } }
-      const res = await this.$axios.$post(url, config);
+      const res = await this.$axios.$get(url, config);
       if (res.status == true) await dispatch("loadData")
       return res
     } catch (error) {

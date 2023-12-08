@@ -1,11 +1,12 @@
 import routeAPI from './router'
 
 export const state = () => ({
-  lists: []
+  lists: [],
 })
 
 export const getters = {
   lists: (state) => state.lists,
+  
 }
 
 export const mutations = {
@@ -70,8 +71,7 @@ export const actions = {
     try {
       const url = routeAPI.booking.delete.replace('{:id}', id);
       let config = { headers: { Authorization: this.$auth.getToken('local') } }
-      const res = await this.$axios.$post(url, config);
-      if (res.status == true) await dispatch("loadData")
+      const res = await this.$axios.$get(url, config);
       return res
     } catch (error) {
       console.log(error);

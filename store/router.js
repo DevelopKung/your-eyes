@@ -9,14 +9,14 @@ export default {
     info: url + 'lists/{:id}',
     update: url + 'lists/{:id}',
     create: url + 'lists',
-    delete: url + 'lists/{:id}',
+    delete: url + 'lists/d/{:id}',
   }, 
   booking: {
     lists: url + 'booking',
     info: url + 'booking/{:id}',
     update: url + 'booking/{:id}',
     create: url + 'booking',
-    delete: url + 'booking/{:id}',
+    delete: url + 'booking/d/{:id}',
   },
   service: {
     discount: url + 'service/discount',

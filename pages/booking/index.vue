@@ -128,11 +128,12 @@ export default {
       }).then(async (result) => {
         if (result.isConfirmed) {
           this.loading = true
-          await this.delete(id).then((res) => {
+          await this.delete(id).then(async (res) => {
             this.loading = false
             if (res.status == false) {
               Swal.fire({ icon: 'error', title: 'เกิดข้อผิดพลาด', })
             } else {
+              await this.getData()
               Swal.fire({ position: 'top-center', icon: 'success', title: 'ลบสำเร็จ', })
             }
           })
