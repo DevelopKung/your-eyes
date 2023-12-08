@@ -1,4 +1,4 @@
-const url = process.env.NODE_ENV == 'development' ? `${process.env.URL_CLIENT}/api/` : `${process.env.URL_CLIENT}${process.env.GITPAGES_NAME}api/`;
+const url = process.env.NODE_ENV == 'development' ? `${process.env.URL_CLIENT_DEV}/api/` : `/api/`;
 export default {
   me: {
     menu: url + 'menu',

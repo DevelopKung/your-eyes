@@ -1,7 +1,7 @@
 <template>
   <v-overlay :value="loading" z-index="999">
     <div class="loading">
-      <img src="/logo.jpg" width="100">
+      <v-img class="img" src="logo.jpg" width="100"></v-img>
     </div>
   </v-overlay>
 </template>
@@ -18,7 +18,7 @@ export default {
 .loading {
   background: #fff;
   border-radius: 50%;
-  img { border-radius: 50%; padding: 10px; }
+  .img { border-radius: 50%; padding: 10px; }
   animation-name: loading;
   animation-duration: 1s;
   animation-iteration-count: infinite;
