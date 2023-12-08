@@ -59,7 +59,7 @@ export const actions = {
     try {
       const url = routeAPI.lists.update.replace('{:id}', id);
       let config = { headers: { Authorization: this.$auth.getToken('local') } }
-      const res = await this.$axios.$put(url, form, config);
+      const res = await this.$axios.$post(url, form, config);
       if (res.status == true) await dispatch("loadData")
       return res
     } catch (error) {
@@ -72,7 +72,7 @@ export const actions = {
     try {
       const url = routeAPI.lists.delete.replace('{:id}', id);
       let config = { headers: { Authorization: this.$auth.getToken('local') } }
-      const res = await this.$axios.$delete(url, config);
+      const res = await this.$axios.$post(url, config);
       if (res.status == true) await dispatch("loadData")
       return res
     } catch (error) {
@@ -82,19 +82,4 @@ export const actions = {
     }
   },
 
-  async importFile({ state, commit }, {id, file}) {
-    try {
-      if (file && id) {
-        const url = routeAPI.lists.import.replace('{:id}', id);
-        let config = { headers: { Authorization: this.$auth.getToken('local') } }
-        const formData = new FormData();
-        formData.append("file", file);
-        const res = await this.$axios.$post(url, formData, config);
-        return res
-      }
-
-    } catch (err) {
-      return err.response.data
-    }
-  },
 }

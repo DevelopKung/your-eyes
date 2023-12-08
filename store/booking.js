@@ -58,7 +58,7 @@ export const actions = {
     try {
       const url = routeAPI.booking.update.replace('{:id}', id);
       let config = { headers: { Authorization: this.$auth.getToken('local') } }
-      const res = await this.$axios.$put(url, form, config);
+      const res = await this.$axios.$post(url, form, config);
       return res
     } catch (error) {
       const res = error.response.data || error
@@ -70,7 +70,7 @@ export const actions = {
     try {
       const url = routeAPI.booking.delete.replace('{:id}', id);
       let config = { headers: { Authorization: this.$auth.getToken('local') } }
-      const res = await this.$axios.$delete(url, config);
+      const res = await this.$axios.$post(url, config);
       if (res.status == true) await dispatch("loadData")
       return res
     } catch (error) {
