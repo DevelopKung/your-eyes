@@ -10,7 +10,7 @@
     "generate": "nuxt generate",
     "remove": "rm -r dist",
     "clearPort": "kill -9 $(lsof -ti:3010,8010)",
-    "phPages": "push-dir --dir=dist --branch=gh-pages --cleanup"
+    "pages": "push-dir --dir=dist --branch=pages --cleanup"
   },
   "author": "",
   "license": "ISC",

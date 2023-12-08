@@ -37,8 +37,7 @@ export default {
       requireRules: [v => !!v || 'กรุณากรอกข้อมูล'],
       member: {
         username: "admin",
-        password: "1234",
-        role: "admin"
+        password: "1234"
       },
       form_regis: {
         first_name: "",
@@ -52,18 +51,9 @@ export default {
         { text: 'หญิง', value: 'female'}
       ],
       show_login: true,
-      role_login: true
     }
   },
-  watch: {
-    role_login(val){
-      if (val == true) {
-        this.member.role = 'admin'
-      } else {
-        this.member.role = 'user'
-      }
-    }
-  },
+
   methods: {
     ...mapActions({
       register: 'register/register'
