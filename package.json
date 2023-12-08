@@ -5,12 +5,11 @@
   "main": "index.js",
   "scripts": {
     "dev": "nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start",
+    "build": "npm run remove && nuxt build",
+    "start": "npm run build && nuxt start",
     "generate": "nuxt generate",
     "remove": "rm -r dist",
-    "clearPort": "kill -9 $(lsof -ti:3010,8010)",
-    "deploy": "npm run remove && npm run build && push-dir --dir=dist --branch=gh-pages"
+    "deploy": "npm run build && push-dir --dir=dist --branch=gh-pages --cleanup"
   },
   "author": "",
   "license": "ISC",
