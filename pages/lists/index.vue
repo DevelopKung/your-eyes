@@ -85,7 +85,6 @@ export default {
         headers: [
           { text: "ลำดับ", value: 'index', sortable: false, width: 10, align: "right" },
           { text: "ชื่อ", value: 'lists_name', sortable: false, width: 100, },
-          { text: "ชื่ออังกฤษ", value: 'lists_name_en', sortable: false, },
           { text: "ราคา", value: 'lists_price', sortable: false, width: 150 },
           { text: "สร้างวันที่", value: 'created_date', sortable: false, width: 70 },
           { text: "สถานะ", value: 'status', sortable: false, width: 100 },

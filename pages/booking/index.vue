@@ -29,8 +29,11 @@
         <template v-slot:[`item.index`]="{ index }">
           <div>{{ index + 1 }}</div>
         </template>
-        <template v-slot:[`item.booking_date`]="{ item }">
-          <span>{{ isDate(item.booking_date)}}</span>
+        <template v-slot:[`item.booking_date.start`]="{ item }">
+          <span>{{ isDate(item.booking_date.start)}}</span>
+        </template>
+        <template v-slot:[`item.booking_date.end`]="{ item }">
+          <span>{{ isDate(item.booking_date.end)}}</span>
         </template>
         <template v-slot:[`item.created_date`]="{ item }">
           <span>{{ isDate(item.created_date) }}</span>
@@ -88,9 +91,10 @@ export default {
           { text: "ชื่อ", value: 'booking_name', sortable: false, },
           { text: "ราคา", value: 'booking_total', sortable: false, },
           { text: "ส่วนลด", value: 'booking_discount.text', sortable: false, width: 150 },
-          { text: "วันที่นัดหมาย", value: 'booking_date', sortable: false, width: 160 },
-          { text: "สร้างวันที่", value: 'created_date', sortable: false, width: 160 },
-          { text: "แก้ไขวันที่", value: 'updated_date', sortable: false, width: 160 },
+          { text: "วันที่เวลาเริ่ม", value: 'booking_date.start', sortable: false, width: 170 },
+          { text: "วันที่เวลาที่สิ้นสุด", value: 'booking_date.end', sortable: false, width: 170 },
+          { text: "สร้างวันที่", value: 'created_date', sortable: false, width: 170 },
+          { text: "แก้ไขวันที่", value: 'updated_date', sortable: false, width: 170 },
           { text: 'ข้อมูล', value: 'actions', sortable: false, width: 150, align: "right" }
         ],
         footerProps: {

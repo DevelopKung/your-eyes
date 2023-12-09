@@ -24,13 +24,13 @@
         <v-row no-gutters>
           <v-col class="pa-1" cols="12" sm="6">
             <v-card outlined class="pa-4 d-flex justify-space-between align-center rounded-xl">
-              <small> <b>ทั้งเดือน</b> </small>
+              <small> <b>ยอดทั้งเดือน</b> </small>
               <div :class="totalMonth? 'success--text':''"> <b>{{ totalMonth | numeral }}</b> </div>
             </v-card>
           </v-col>
           <v-col class="pa-1" cols="12" sm="6">
             <v-card outlined class="pa-4 d-flex justify-space-between align-center rounded-xl">
-            <small> <b>วันที่ {{ new Date(focus).toLocaleDateString('TH') }}</b> </small>
+            <small> <b>ยอดวันที่ {{ new Date(focus).toLocaleDateString('TH') }}</b> </small>
             <div :class="totalDateNow? 'success--text':'error--text'"> <b>{{ totalDateNow | numeral }}</b> </div>
           </v-card>
           </v-col>
@@ -48,7 +48,11 @@
             @click:more="viewDay" 
             @click:date="viewDay"
             locale="TH"
-          ></v-calendar>
+          >
+            <template v-slot:event="{event}">
+             <span class="px-2">{{ event.name }}</span>
+            </template>
+          </v-calendar>
           <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" offset-x>
             <v-card flat min-width="200">
               <v-toolbar :color="selectedEvent.color" dark>
@@ -146,7 +150,10 @@ export default {
         return lists.filter(x => (new Date(x.start) > first && new Date(x.start) < end)).reduce((acc, list) => (acc + list.total), 0)
       }
       return 0
-    }
+    },
+    mobile(){
+      return this.$vuetify.breakpoint.width < 450
+    },
   },
   mounted() {
     this.$refs.calendar.checkChange()
@@ -157,7 +164,11 @@ export default {
     }),
     viewDay({ date }) {
       this.focus = date
-      this.type = this.type=='day'?'month':'day'
+      if (this.mobile) {
+        this.type = this.type=='month'?'day':'month'
+        return
+      }
+      this.type = this.type=='month'?'4day':'month'
     },
     getEventColor(event) {
       return event.color

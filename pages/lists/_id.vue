@@ -16,13 +16,6 @@
           </v-col>
 
           <v-col cols="12" sm="3" md="2" class="pt-4 pb-0">
-            <h4>ชื่ออังกฤษ</h4>
-          </v-col>
-          <v-col cols="12" sm="9" md="4" class="pb-0">
-            <v-text-field v-model="form.lists_name_en" required class="mb-2" placeholder="ชื่ออังกฤษ" outlined dense hide-details></v-text-field>
-          </v-col>
-
-          <v-col cols="12" sm="3" md="2" class="pt-4 pb-0">
             <h4>ราคา</h4>
           </v-col>
           <v-col cols="12" sm="9" md="4" class="pb-0">

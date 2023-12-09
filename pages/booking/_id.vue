@@ -41,8 +41,33 @@
               <v-col cols="12" sm="6" class="py-1 py-sm-2">
                 <Date-Picker :value="form.date" :title="`เริ่ม`" @update="setDate" :noBtnSave="true"/>
               </v-col>
-              <v-col cols="12" sm="6" class="py-1 py-sm-2">
-                <v-select v-model="form.time" :items="lists_time" placeholder="เวลา" item-text="text" item-value="value" outlined dense hide-details></v-select>
+            </v-row>
+          </v-col>
+
+          <v-col cols="12" sm="3" md="2" class="pt-4 pb-0">
+            <h4> เวลาเริ่ม </h4>
+          </v-col>
+          <v-col cols="12" sm="9" md="4" class="pb-0">
+            <v-row no-gutters>
+              <v-col class="py-1 pr-1" cols="6" md="3">
+                <v-select v-model="form.s_house" :items="times.houses" placeholder="ชั่วโมง" item-text="text" item-value="value" outlined dense hide-details></v-select>
+              </v-col>
+              <v-col class="py-1 pl-1" cols="6" md="3">
+                <v-select v-model="form.s_minutes" :items="times.minutes" placeholder="นาที" item-text="text" item-value="value" outlined dense hide-details></v-select>
+              </v-col>
+            </v-row>
+          </v-col>
+
+          <v-col cols="12" sm="3" md="2" class="pt-4 pb-0">
+            <h4> เวลาสิ้นสุด </h4>
+          </v-col>
+          <v-col cols="12" sm="9" md="4" class="pb-0">
+            <v-row no-gutters>
+              <v-col class="py-1 pr-1" cols="6" md="3">
+                <v-select v-model="form.e_house" :items="times.houses" placeholder="ชั่วโมง" item-text="text" item-value="value" outlined dense hide-details></v-select>
+              </v-col>
+              <v-col class="py-1 pl-1" cols="6" md="3">
+                <v-select v-model="form.e_minutes" :items="times.minutes" placeholder="นาที" item-text="text" item-value="value" outlined dense hide-details></v-select>
               </v-col>
             </v-row>
           </v-col>
@@ -98,7 +123,9 @@ import { mapActions, mapGetters } from 'vuex'
 import Swal from 'sweetalert2'
 import data from '@/static/data.json'
 const colors = data.colors
-const times = data.times
+const houses = data.houses
+const minutes = data.minutes
+// const times = data.times
 export default {
   pageTitle: "",
   toolbarMode: "hide",
@@ -113,15 +140,22 @@ export default {
       mode: 'new',
       form: {
         date: this.$moment().format('YYYY-MM-DD'),
-        time: '10:00',
+        s_house: '10',
+        s_minutes: '00',
+        e_house: '11',
+        e_minutes: '00',
         booking_color: '#5582b9'
       },
       loading: false,
       form_valid: true,
       valid: [v => !!v || 'กรุณากรอกข้อมูลให้ครบถ้วน'],
-      lists_time: times,
+      // lists_time: times,
       booking_lists: (this.items_lists&&this.items_lists.length > 0) ? this.items_lists[0]: null,
-      colors: colors
+      colors: colors,
+      times: {
+        houses: houses,
+        minutes: minutes
+      }
     }
   },
   computed: {
@@ -192,8 +226,11 @@ export default {
       const res = await this.loadInfo(id)
       if (res.status == true) {
         this.form = res.payload
-        this.form.date = this.$moment(this.form.booking_date).format('YYYY-MM-DD')
-        this.form.time = this.$moment(this.form.booking_date).format('hh:mm')
+        this.form.date = this.$moment(this.form.booking_date.start).format('YYYY-MM-DD')
+        this.form.s_house = this.$moment(this.form.booking_date.start).format('HH')
+        this.form.s_minutes = this.$moment(this.form.booking_date.start).format('mm')
+        this.form.e_house = this.$moment(this.form.booking_date.end).format('HH')
+        this.form.e_minutes = this.$moment(this.form.booking_date.end).format('mm')
         this.booking_lists = res.payload.booking_lists
       }
       this.loading = false
@@ -206,7 +243,10 @@ export default {
         booking_social: form.booking_social || null,
         booking_discount: form.booking_discount || null,
         booking_total: this.totalPrice || 0,
-        booking_date: this.$moment(`${this.form.date} ${this.form.time}`),
+        booking_date: {
+          start: this.$moment(`${this.form.date} ${this.form.s_house}:${this.form.s_minutes}`),
+          end: this.$moment(`${this.form.date} ${this.form.e_house}:${this.form.e_minutes}`),
+        },
         booking_color: form.booking_color || null,
         booking_remark: form.booking_remark || null,
       }

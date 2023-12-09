@@ -8,7 +8,6 @@ export const actions = {
       const res = await this.$axios.$post(url, form);
       return res
     } catch (error) {
-      console.log(routeAPI.register);
       const res = error.response || error
       return res
     }
