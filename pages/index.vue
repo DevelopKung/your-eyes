@@ -66,6 +66,12 @@
                 <div> คุณ : {{ selectedEvent.name }} </div>
                 <div> วัน : {{ new Date(selectedEvent.start).toLocaleDateString('TH') }} </div>
                 <div> เวลา : {{ isTime(selectedEvent.start) }} - {{ isTime(selectedEvent.end) }} </div>
+                <div v-if="selectedEvent.detail">
+                  <span class="mr-4"> ราคา : {{ selectedEvent.total }} </span>
+                  <span> ส่วนลด : {{ selectedEvent.detail.discount }} </span>
+                </div>
+                <div v-if="selectedEvent.detail"> ข้อมูลติดต่อ : {{ selectedEvent.detail.social }} </div>
+                <div v-if="selectedEvent.detail"> เบอร์โทร : {{ selectedEvent.detail.phone }} </div>
                 <div v-if="selectedEvent.remark"> หมายเหตุ : {{ selectedEvent.remark }} </div>
               </v-card-text>
             </v-card>
