@@ -72,7 +72,7 @@
                 </div>
                 <div v-if="selectedEvent.detail">
                   <span v-if="selectedEvent.detail.discount"> ส่วนลด : {{ selectedEvent.detail.discount }} </span>
-                  <span v-if="selectedEvent.total" class="mr-4"> รวม : {{ selectedEvent.total | numeral  }} </span>
+                  <span v-if="selectedEvent.total" class="mr-4"> ราคาสุทธิ : {{ selectedEvent.total | numeral  }} </span>
                 </div>
                 <div v-if="selectedEvent.detail"> ข้อมูลติดต่อ : {{ selectedEvent.detail.social }} </div>
                 <div v-if="selectedEvent.detail"> เบอร์โทร : {{ selectedEvent.detail.phone }} </div>
