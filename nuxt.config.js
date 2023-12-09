@@ -55,6 +55,7 @@ export default {
   buildModules: [
     '@nuxtjs/moment',
     '@nuxtjs/vuetify',
+    '@nuxtjs/pwa',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -63,7 +64,6 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/dotenv',
     'vue-sweetalert2/nuxt',
-    '@nuxtjs/pwa',
   ],
 
   sweetalert: {
@@ -160,13 +160,13 @@ export default {
 
   pwa: {
     meta: {
-      title: 'YourEye',
+      title: 'Your Eye',
       author: 'Me'
     },
     manifest: {
-      name: 'YourEye',
+      name: 'Your Eye',
       lang: 'th',
-      short_name: "YourEye",
+      short_name: "Your Eye",
       description: "Booking Shop Your Eye"
     },
     icon: {
