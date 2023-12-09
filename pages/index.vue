@@ -67,8 +67,12 @@
                 <div> วัน : {{ new Date(selectedEvent.start).toLocaleDateString('TH') }} </div>
                 <div> เวลา : {{ isTime(selectedEvent.start) }} - {{ isTime(selectedEvent.end) }} </div>
                 <div v-if="selectedEvent.detail">
-                  <span class="mr-4"> ราคา : {{ selectedEvent.total }} </span>
-                  <span> ส่วนลด : {{ selectedEvent.detail.discount }} </span>
+                  <span v-if="selectedEvent.detail.lists_name" class="mr-4"> รายการ : {{ selectedEvent.detail.lists_name }} </span>
+                  <span v-if="selectedEvent.detail.lists_total"> ราคา : {{ selectedEvent.detail.lists_total | numeral  }} </span>
+                </div>
+                <div v-if="selectedEvent.detail">
+                  <span v-if="selectedEvent.detail.discount"> ส่วนลด : {{ selectedEvent.detail.discount }} </span>
+                  <span v-if="selectedEvent.total" class="mr-4"> รวม : {{ selectedEvent.total | numeral  }} </span>
                 </div>
                 <div v-if="selectedEvent.detail"> ข้อมูลติดต่อ : {{ selectedEvent.detail.social }} </div>
                 <div v-if="selectedEvent.detail"> เบอร์โทร : {{ selectedEvent.detail.phone }} </div>
