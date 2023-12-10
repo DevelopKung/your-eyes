@@ -12,8 +12,8 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: 'Booking',
-    title: 'Booking',
+    titleTemplate: 'Your Eyes',
+    title: 'Your Eyes',
     htmlAttrs: {
       lang: 'en'
     },
@@ -24,7 +24,7 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
+      { rel: 'icon', type: 'image/png', href: '/favicon.png' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600&display=swap' }
     ],
     script: [
@@ -160,17 +160,17 @@ export default {
 
   pwa: {
     meta: {
-      title: 'Your Eye',
+      title: 'YourEye',
       author: 'Me'
     },
     manifest: {
-      name: 'Your Eye',
+      name: 'YourEye',
       lang: 'th',
-      short_name: "Your Eye",
+      short_name: "YourEye",
       description: "Booking Shop Your Eye"
     },
     icon: {
-      fileName: 'icon.jpg',
+      fileName: 'favicon.png',
       sizes: [64, 120, 144, 152, 192, 384, 512]
     }
   },
