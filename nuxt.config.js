@@ -55,7 +55,6 @@ export default {
   buildModules: [
     '@nuxtjs/moment',
     '@nuxtjs/vuetify',
-    '@nuxtjs/pwa',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -64,6 +63,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/dotenv',
     'vue-sweetalert2/nuxt',
+    '@nuxtjs/pwa',
   ],
 
   sweetalert: {

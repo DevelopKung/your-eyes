@@ -29,11 +29,20 @@
         <template v-slot:[`item.index`]="{ index }">
           <div>{{ index + 1 }}</div>
         </template>
-        <template v-slot:[`item.booking_date.start`]="{ item }">
-          <span>{{ isDate(item.booking_date.start)}}</span>
+        <template v-slot:[`item.booking_lists.lists_price`]="{ item }">
+          <div>{{ item.booking_lists.lists_price | numeral }}</div>
         </template>
-        <template v-slot:[`item.booking_date.end`]="{ item }">
-          <span>{{ isDate(item.booking_date.end)}}</span>
+        <template v-slot:[`item.booking_total`]="{ item }">
+          <div>{{ item.booking_total | numeral }}</div>
+        </template>
+        <template v-slot:[`item.booking_date`]="{ item }">
+          <span>{{ new Date(item.booking_date.start).toLocaleDateString('TH')}}</span>
+        </template>
+        <template v-slot:[`item.booking_time`]="{ item }">
+          <span>
+            {{ $moment(item.booking_date.start).format('HH:mm') }} - 
+            {{ $moment(item.booking_date.end).format('HH:mm')}}
+          </span>
         </template>
         <template v-slot:[`item.created_date`]="{ item }">
           <span>{{ isDate(item.created_date) }}</span>
@@ -88,11 +97,13 @@ export default {
       return {
         headers: [
           { text: "ลำดับ", value: 'index', sortable: false, width: 10, align: "right" },
-          { text: "ชื่อ", value: 'booking_name', sortable: false, },
-          { text: "ราคา", value: 'booking_total', sortable: false, },
-          { text: "ส่วนลด", value: 'booking_discount.text', sortable: false, width: 150 },
-          { text: "วันที่เวลาเริ่ม", value: 'booking_date.start', sortable: false, width: 170 },
-          { text: "วันที่เวลาที่สิ้นสุด", value: 'booking_date.end', sortable: false, width: 170 },
+          { text: "ชื่อ", value: 'booking_name', sortable: false, width: 100 },
+          { text: "ราคาเต็ม", value: 'booking_lists.lists_price', sortable: false, width: 100, align: "right" },
+          { text: "รายการ", value: 'booking_lists.lists_name', sortable: false, width: 100 },
+          { text: "ส่วนลด", value: 'booking_discount.text', sortable: false, width: 100 },
+          { text: "ราคาสุทธิ", value: 'booking_total', sortable: false, width: 100, align: "right" },
+          { text: "วันที่", value: 'booking_date', sortable: false, width: 100 },
+          { text: "เวลา", value: 'booking_time', sortable: false, width: 120 },
           { text: "สร้างวันที่", value: 'created_date', sortable: false, width: 170 },
           { text: "แก้ไขวันที่", value: 'updated_date', sortable: false, width: 170 },
           { text: 'ข้อมูล', value: 'actions', sortable: false, width: 150, align: "right" }
