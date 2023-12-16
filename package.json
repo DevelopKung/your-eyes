@@ -9,7 +9,7 @@
     "start": "npm run build && nuxt start",
     "generate": "nuxt generate",
     "remove": "rm -r dist",
-    "deploy": "npm run build && push-dir --dir=dist --branch=gh-pages --cleanup"
+    "deploy": "npm run build && push-dir --dir=dist --branch=gh-pages --cleanup --force"
   },
   "author": "",
   "license": "ISC",
