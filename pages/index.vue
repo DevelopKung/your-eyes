@@ -49,9 +49,9 @@
             @click:date="viewDay"
             locale="TH"
             :interval-format="intervalFormat"
-            :first-interval="9"
+            :first-interval="firstTime"
             :interval-minutes="60"
-            :interval-count="times.length + 2"
+            :interval-count="endTime"
           >
             <template v-slot:event="{event}">
              <span class="px-2">{{ event.name }}</span>
@@ -98,7 +98,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { colors, houses, minutes, times } from '@/static/data.json'
-
+console.log(times);
 export default {
   pageTitle: "หน้าแรก",
   toolbarMode: "hide",
@@ -124,7 +124,6 @@ export default {
       colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
       names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
       loading: false,
-      times: times
     }
   },
   computed: {
@@ -161,6 +160,19 @@ export default {
     mobile(){
       return this.$vuetify.breakpoint.width < 450
     },
+    firstTime(){
+      if (times&&times.length>0) {
+        let first_time = times[0].value.split(":")[0] - 1
+        return first_time
+      }
+      return 5
+    },
+    endTime(){
+      if (houses&&houses.length>0) {
+        return houses.length + 1
+      }
+      return 18
+    }
   },
   mounted() {
     this.$refs.calendar.checkChange()
