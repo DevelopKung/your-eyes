@@ -24,7 +24,7 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/png', href: '/icon.jpeg' },
+      { rel: 'icon', type: 'image/png', href: '/icon.png' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600&display=swap' }
     ],
     script: [
@@ -170,7 +170,7 @@ export default {
       description: "Your Eye"
     },
     icon: {
-      fileName: 'icon.jpeg',
+      fileName: '/icon.png',
       sizes: [64, 120, 144, 152, 192, 384, 512]
     }
   },
