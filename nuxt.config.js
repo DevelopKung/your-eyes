@@ -170,7 +170,7 @@ export default {
       useWebmanifestExtension: false
     },
     icon: {
-      fileName: 'icon.png',
+      fileName: 'icon.jepg',
       sizes: [64, 120, 144, 152, 192, 384, 512]
     }
   },
