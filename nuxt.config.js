@@ -24,7 +24,7 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/png', href: '/favicon.png' },
+      { rel: 'icon', type: 'image/png', href: '/icon.jpeg' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600&display=swap' }
     ],
     script: [
@@ -55,6 +55,7 @@ export default {
   buildModules: [
     '@nuxtjs/moment',
     '@nuxtjs/vuetify',
+    '@nuxtjs/pwa',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -63,7 +64,6 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/dotenv',
     'vue-sweetalert2/nuxt',
-    '@nuxtjs/pwa',
   ],
 
   sweetalert: {
@@ -167,10 +167,10 @@ export default {
       name: 'YourEye',
       lang: 'th',
       short_name: "YourEye",
-      description: "Booking Shop Your Eye"
+      description: "Your Eye"
     },
     icon: {
-      fileName: 'favicon.png',
+      fileName: 'icon.jpeg',
       sizes: [64, 120, 144, 152, 192, 384, 512]
     }
   },

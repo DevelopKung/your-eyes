@@ -98,7 +98,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { colors, houses, minutes, times } from '@/static/data.json'
-console.log(times);
+
 export default {
   pageTitle: "หน้าแรก",
   toolbarMode: "hide",
