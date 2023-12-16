@@ -167,7 +167,7 @@ export default {
       name: 'YourEye',
       lang: 'th',
       description: "Your Eye",
-      short_name: "MyResume",
+      short_name: "YourEye",
       useWebmanifestExtension: false
     },
     icon: {
