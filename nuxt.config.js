@@ -166,11 +166,11 @@ export default {
     manifest: {
       name: 'YourEye',
       lang: 'th',
-      short_name: "YourEye",
-      description: "Your Eye"
+      description: "Your Eye",
+      useWebmanifestExtension: false
     },
     icon: {
-      fileName: '/icon.png',
+      fileName: 'icon.png',
       sizes: [64, 120, 144, 152, 192, 384, 512]
     }
   },
