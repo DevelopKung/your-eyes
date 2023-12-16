@@ -3,7 +3,7 @@
   <v-list v-if="info">
     <v-list-item>
       <v-list-item-avatar size="50" color="#eee" >
-        <v-img src="logo.jpg"></v-img>
+        <v-img src="logo.png"></v-img>
       </v-list-item-avatar>
 
       <v-list-item-content>

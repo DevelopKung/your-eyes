@@ -1,7 +1,7 @@
 <template>
   <v-overlay :value="loading" z-index="999">
     <div class="loading">
-      <v-img class="img" src="logo.jpg" width="100"></v-img>
+      <v-img class="img" src="logo.png" width="100"></v-img>
     </div>
   </v-overlay>
 </template>

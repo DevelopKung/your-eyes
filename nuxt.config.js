@@ -160,17 +160,18 @@ export default {
 
   pwa: {
     meta: {
-      title: 'YourEye',
+      title: 'Your Eye',
       author: 'Me'
     },
     manifest: {
       name: 'YourEye',
       lang: 'th',
       description: "Your Eye",
+      short_name: "MyResume",
       useWebmanifestExtension: false
     },
     icon: {
-      fileName: 'icon.jepg',
+      fileName: 'logo.png',
       sizes: [64, 120, 144, 152, 192, 384, 512]
     }
   },

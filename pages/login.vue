@@ -29,7 +29,7 @@ export default {
   layout: 'blank',
   data() {
     return {
-      logo_image: "/logo.jpg",
+      logo_image: "/logo.png",
       show_pwd: false,
       loading: false,
       valid_login: true,
@@ -85,7 +85,7 @@ export default {
     }
 
   .card {
-    background: url('~/static/logo.jpg')  right no-repeat;
+    background: url('~/static/logo.png')  right no-repeat;
     background-size: cover;
     border-radius: 20px !important;
     

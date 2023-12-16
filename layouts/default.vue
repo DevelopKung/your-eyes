@@ -27,7 +27,7 @@
           <v-menu v-model="profile_menu" transition="slide-y-transition" :close-on-content-click="false" offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-avatar size="36" class="avatar" color="#eee" v-bind="attrs" v-on="on">
-                <v-img src="logo.jpg"></v-img>
+                <v-img src="logo.png"></v-img>
               </v-avatar>
             </template>
 
