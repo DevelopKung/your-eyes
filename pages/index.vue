@@ -48,6 +48,10 @@
             @click:more="viewDay" 
             @click:date="viewDay"
             locale="TH"
+            :interval-format="intervalFormat"
+            :first-interval="9"
+            :interval-minutes="60"
+            :interval-count="times.length + 2"
           >
             <template v-slot:event="{event}">
              <span class="px-2">{{ event.name }}</span>
@@ -93,6 +97,8 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { colors, houses, minutes, times } from '@/static/data.json'
+
 export default {
   pageTitle: "หน้าแรก",
   toolbarMode: "hide",
@@ -117,7 +123,8 @@ export default {
       events: [],
       colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
       names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
-      loading: false
+      loading: false,
+      times: times
     }
   },
   computed: {
@@ -200,7 +207,10 @@ export default {
     },
     isTime(date){
       return this.$moment(date).format('HH:mm')
-    }
+    },
+    intervalFormat(e){
+      return e.time
+    },
   },
   async created() {
     this.loading = true

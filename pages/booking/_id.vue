@@ -121,11 +121,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import Swal from 'sweetalert2'
-import data from '@/static/data.json'
-const colors = data.colors
-const houses = data.houses
-const minutes = data.minutes
-// const times = data.times
+import { colors, houses, minutes, times } from '@/static/data.json'
 export default {
   pageTitle: "",
   toolbarMode: "hide",
