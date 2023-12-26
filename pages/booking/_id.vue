@@ -21,14 +21,22 @@
           <v-col cols="12" sm="9" md="4" class="pb-0">
             <v-select v-model="booking_lists" :rules="valid" :items="items_lists" placeholder="รายการ" item-text="lists_name" item-value="_id" outlined dense hide-details return-object></v-select>
             <v-row no-gutters>
-              <v-col cols="12" sm="12" md="4" class=" my-2">
+              <!-- <v-col cols="12" sm="12" md="4" class="my-2">
                 <v-select v-model="form.booking_discount" :rules="valid" :items="listsDiscount" label="ส่วนลด" placeholder="ลดราคา" outlined dense hide-details return-object></v-select>
+              </v-col> -->
+
+              <v-col cols="6" sm="6" md="4" class="pr-3 px-md-3 my-2">
+                <v-text-field v-model="form.booking_discount.value" label="ส่วนลด" placeholder="ราคาเต็ม" outlined dense hide-details type="number"></v-text-field>
               </v-col>
+              <v-col cols="6" sm="6" md="4" class="pl-3 px-md-0 my-2">
+                <v-select v-model="form.booking_discount.type" :rules="valid" :items="type_discount" item-value="value" item-text="text" outlined dense hide-details></v-select>
+              </v-col>
+
               <v-col v-if="form.booking_discount || booking_lists" cols="6" sm="6" md="4" class="pr-3 px-md-3 my-md-2">
-                <v-text-field label="ราคา" placeholder="ราคาเต็ม" outlined dense hide-details readonly :value="totalPrice"></v-text-field>
+                <v-text-field class="total-price" v-if="booking_lists" label="ราคา" placeholder="ราคาเต็ม" outlined dense hide-details readonly :value="booking_lists.lists_price" :suffix="discounting.toString()"></v-text-field>
               </v-col>
               <v-col v-if="form.booking_discount || booking_lists" cols="6" sm="6" md="4" class="pl-3 px-md-0 my-md-2">
-                <v-text-field label="ส่วนลด" placeholder="ส่วนลด" outlined dense hide-details readonly :value="discounting" suffix="บาท"></v-text-field>
+                <v-text-field v-if="booking_lists" label="ส่วนลด" placeholder="ราคาสุทธิ" outlined dense hide-details readonly :value="totalPrice" suffix="บาท"></v-text-field>
               </v-col>
             </v-row>
           </v-col>
@@ -140,8 +148,16 @@ export default {
         s_minutes: '00',
         e_house: '11',
         e_minutes: '00',
-        booking_color: '#5582b9'
+        booking_color: '#5582b9',
+        booking_discount: {
+          value: 0,
+          type: 'percent'
+        }
       },
+      type_discount: [
+        { value: 'percent', text: '%' },
+        { value: 'bath', text: 'บาท' }
+      ],
       loading: false,
       form_valid: true,
       valid: [v => !!v || 'กรุณากรอกข้อมูลให้ครบถ้วน'],
@@ -232,12 +248,18 @@ export default {
       this.loading = false
     },
     validateData(form) {
+      let _discount = (typeof form.booking_discount.value != 'number')
+                      ? parseInt(form.booking_discount.value)
+                      : form.booking_discount.value
       let params = {
         booking_name: form.booking_name || null,
         booking_lists_id: form.booking_lists_id || null,
         booking_phone: form.booking_phone || null,
         booking_social: form.booking_social || null,
-        booking_discount: form.booking_discount || null,
+        booking_discount:  {
+          value: _discount || 0,
+          type: form.booking_discount.type || 'percent'
+        },
         booking_total: this.totalPrice || 0,
         booking_date: {
           start: this.$moment(`${this.form.date} ${this.form.s_house}:${this.form.s_minutes}`),
@@ -246,7 +268,7 @@ export default {
         booking_color: form.booking_color || null,
         booking_remark: form.booking_remark || null,
       }
-
+      
       if (this.form_valid) {
         if (this.mode == 'new') {
           this.createData(params)
@@ -305,4 +327,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+::v-deep .total-price {
+  .v-text-field__suffix { font-size: 14px; color: red; }
+}
+</style>
