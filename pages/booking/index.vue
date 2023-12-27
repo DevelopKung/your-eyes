@@ -102,8 +102,8 @@ export default {
         headers: [
           { text: "ลำดับ", value: 'index', sortable: false, width: 10, align: "right" },
           { text: "ชื่อ", value: 'booking_name', sortable: false, width: 100 },
-          { text: "ราคาเต็ม", value: 'booking_lists.lists_price', sortable: false, width: 100, align: "right" },
           { text: "รายการ", value: 'booking_lists.lists_name', sortable: false, width: 100 },
+          { text: "ราคาเต็ม", value: 'booking_lists.lists_price', sortable: false, width: 100, align: "right" },
           { text: "ส่วนลด", value: 'booking_discount', sortable: false, width: 100 },
           { text: "ราคาสุทธิ", value: 'booking_total', sortable: false, width: 100, align: "right" },
           { text: "วันที่", value: 'booking_date', sortable: false, width: 100 },

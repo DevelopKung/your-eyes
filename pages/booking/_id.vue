@@ -19,7 +19,14 @@
             <h4>รายการ</h4>
           </v-col>
           <v-col cols="12" sm="9" md="4" class="pb-0">
-            <v-select v-model="booking_lists" :rules="valid" :items="items_lists" placeholder="รายการ" item-text="lists_name" item-value="_id" outlined dense hide-details return-object></v-select>
+            <v-select v-model="booking_lists" :rules="valid" :items="items_lists" placeholder="รายการ" item-text="lists_name" item-value="_id" outlined dense hide-details return-object>
+              <template v-slot:selection="{ item }">
+                <span>{{ item.lists_name }} - {{ item.lists_price }}</span>
+              </template>
+              <template v-slot:item="{ item }">
+                <span>{{ item.lists_name }} - {{ item.lists_price }}</span>
+              </template>
+            </v-select>
             <v-row no-gutters>
               <!-- <v-col cols="12" sm="12" md="4" class="my-2">
                 <v-select v-model="form.booking_discount" :rules="valid" :items="listsDiscount" label="ส่วนลด" placeholder="ลดราคา" outlined dense hide-details return-object></v-select>
@@ -33,10 +40,10 @@
               </v-col>
 
               <v-col v-if="form.booking_discount || booking_lists" cols="6" sm="6" md="4" class="pr-3 px-md-3 my-md-2">
-                <v-text-field class="total-price" v-if="booking_lists" label="ราคา" placeholder="ราคาเต็ม" outlined dense hide-details readonly :value="booking_lists.lists_price" :suffix="discounting.toString()"></v-text-field>
+                <v-text-field class="total-price" v-if="booking_lists" label="ส่วนลด" placeholder="ส่วนลด" outlined dense hide-details readonly :value="discounting"></v-text-field>
               </v-col>
               <v-col v-if="form.booking_discount || booking_lists" cols="6" sm="6" md="4" class="pl-3 px-md-0 my-md-2">
-                <v-text-field v-if="booking_lists" label="ส่วนลด" placeholder="ราคาสุทธิ" outlined dense hide-details readonly :value="totalPrice" suffix="บาท"></v-text-field>
+                <v-text-field v-if="booking_lists" label="ราคาสุทธิ" placeholder="ราคาสุทธิ" outlined dense hide-details readonly :value="totalPrice" suffix="บาท"></v-text-field>
               </v-col>
             </v-row>
           </v-col>
