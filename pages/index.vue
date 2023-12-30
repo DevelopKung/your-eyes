@@ -59,7 +59,7 @@
           </v-calendar>
           <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" offset-x>
             <v-card flat min-width="200">
-              <v-toolbar :color="selectedEvent.color" dark>
+              <v-toolbar :color="selectedEvent.status == 'สำเร็จ' ? 'success': 'warning'" dark>
                 <v-btn icon @click="$router.push(`/booking/${selectedEvent.id}`)">
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
@@ -78,6 +78,7 @@
                   <span v-if="selectedEvent.detail.lists_name" class="mr-4"> รายการ : {{ selectedEvent.detail.lists_name }} </span>
                   <span v-if="selectedEvent.detail.lists_total"> ราคา : {{ selectedEvent.detail.lists_total | numeral  }} </span>
                 </div>
+                <div v-if="selectedEvent.mascara"> มาสคาร่า : รับ </div>
                 <div v-if="selectedEvent.detail">
                   <span v-if="selectedEvent.detail.discount"> ส่วนลด : {{ selectedEvent.detail.discount }} </span>
                   <span v-if="selectedEvent.total" class="mr-4"> ราคาสุทธิ : {{ selectedEvent.total | numeral  }} </span>
@@ -190,7 +191,7 @@ export default {
       this.type = this.type=='month'?'4day':'month'
     },
     getEventColor(event) {
-      return event.color
+      return event.status === 'สำเร็จ'? 'success': 'warning'
     },
     prev() {
       this.$refs.calendar.prev()

@@ -48,6 +48,15 @@
             </v-row>
           </v-col>
 
+          <v-col v-if="!mobile" cols="12" sm="3" md="2" class="pt-4 pb-0"></v-col>
+          <v-col cols="12" sm="9" md="4" class="pb-0">
+            <v-row>
+              <v-col cols="12" sm="6" class="py-1 py-sm-2">
+                <v-checkbox v-model="form.booking_mascara" label="รับมาสคาร่า" color="success" hide-details></v-checkbox>
+              </v-col>
+            </v-row>
+          </v-col>
+
           <v-col cols="12" sm="3" md="2" class="pt-4 pb-0">
             <h4>วันที่</h4>
           </v-col>
@@ -88,6 +97,13 @@
           </v-col>
 
           <v-col cols="12" sm="3" md="2" class="pt-4 pb-0">
+            <h4> สถานะ </h4>
+          </v-col>
+          <v-col cols="12" sm="9" md="4" class="pb-0">
+            <v-select v-model="form.booking_status" :items="['จองคิว', 'สำเร็จ']" placeholder="สถานะ" outlined dense hide-details></v-select>
+          </v-col>
+
+          <v-col cols="12" sm="3" md="2" class="pt-4 pb-0">
             <h4>โซเชียล</h4>
           </v-col>
           <v-col cols="12" sm="9" md="4" class="pb-0">
@@ -101,7 +117,7 @@
             <v-text-field v-model="form.booking_phone" @keypress="isPhone($event)" placeholder="เบอร์โทร" outlined dense hide-details></v-text-field>
           </v-col>
 
-          <v-col cols="12" sm="3" md="2" class="pt-4 pb-0">
+          <v-col cols="12" sm="3" md="2" class="pt-4 pb-0 d-none d-sm-block">
             <h4>สี</h4>
           </v-col>
           <v-col cols="12" sm="9" md="4" class="pb-0">
@@ -159,7 +175,9 @@ export default {
         booking_discount: {
           value: 0,
           type: 'percent'
-        }
+        },
+        booking_mascara: false,
+        booking_status: 'จองคิว'
       },
       type_discount: [
         { value: 'percent', text: '%' },
@@ -193,14 +211,15 @@ export default {
       try {
         let price = this.booking_lists.lists_price
         let discounts = this.form.booking_discount
+        let mascara = this.form.booking_mascara? 29: 0
         if (price && discounts) {
           if (discounts.type === 'percent') {
             let discount = ((discounts.value * price) / 100).toFixed(2)
-            return  parseInt(price) - Math.floor(parseFloat(discount))
+            return ( parseInt(price) - Math.floor(parseFloat(discount))) + mascara
           } else {
-            return  parseInt(price) - parseInt(discounts.value)
+            return  (parseInt(price) - parseInt(discounts.value)) + mascara
           }
-        } else if (price) return price
+        } else if (price) return price + mascara
         return 0
       } catch (error) {
         return 0
@@ -222,7 +241,10 @@ export default {
       } catch (error) {
         return 0
       }
-    }
+    },
+    mobile(){
+      return this.$vuetify.breakpoint.width < 450
+    },
   },
   watch: {
     booking_lists(value) {
@@ -231,6 +253,9 @@ export default {
         this.form.booking_total = value.lists_price
       }
     },
+    "form.booking_mascara": function(val){
+      console.log(val);
+    }
   },
   methods: {
     ...mapActions({
@@ -274,6 +299,8 @@ export default {
         },
         booking_color: form.booking_color || null,
         booking_remark: form.booking_remark || null,
+        booking_mascara: form.booking_mascara || false,
+        booking_status: form.booking_status || null,
       }
       
       if (this.form_valid) {
