@@ -78,7 +78,7 @@
                   <span v-if="selectedEvent.detail.lists_name" class="mr-4"> รายการ : {{ selectedEvent.detail.lists_name }} </span>
                   <span v-if="selectedEvent.detail.lists_total"> ราคา : {{ selectedEvent.detail.lists_total | numeral  }} </span>
                 </div>
-                <div v-if="selectedEvent.mascara"> มาสคาร่า : รับ </div>
+                <div v-if="selectedEvent.mascara"> มาสคาร่า : รับ 29 บ. </div>
                 <div v-if="selectedEvent.detail">
                   <span v-if="selectedEvent.detail.discount"> ส่วนลด : {{ selectedEvent.detail.discount }} </span>
                   <span v-if="selectedEvent.total" class="mr-4"> ราคาสุทธิ : {{ selectedEvent.total | numeral  }} </span>
