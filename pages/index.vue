@@ -98,7 +98,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { colors, houses, minutes, times } from '@/static/data.json'
+import { houses, times } from '@/static/data.json'
 
 export default {
   pageTitle: "หน้าแรก",
