@@ -117,7 +117,7 @@
             <v-text-field v-model="form.booking_phone" @keypress="isPhone($event)" placeholder="เบอร์โทร" outlined dense hide-details></v-text-field>
           </v-col>
 
-          <v-col cols="12" sm="3" md="2" class="pt-4 pb-0 d-none d-sm-block">
+          <!-- <v-col cols="12" sm="3" md="2" class="pt-4 pb-0 d-none d-sm-block">
             <h4>สี</h4>
           </v-col>
           <v-col cols="12" sm="9" md="4" class="pb-0">
@@ -133,7 +133,7 @@
                 <span class="ml-4">{{ item }}</span>
               </template>
             </v-select>
-          </v-col>
+          </v-col> -->
 
           <v-col cols="12" sm="3" md="2" class="pt-4 pb-0">
             <h4>หมายเหตุ</h4>
