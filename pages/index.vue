@@ -197,11 +197,8 @@ export default {
       lists = lists.filter(x => x.type == 'expenses').map((x,i) => {
         x.start = new Date(x.start)
         x.end = new Date(x.end)
-        x.timed = false
         return x
       })
-
-      console.log(lists);
       return lists
     },
     total(){
@@ -228,7 +225,7 @@ export default {
         let first = new Date(this.$moment(this.focus).startOf('month'))
         let end = new Date(this.$moment(this.focus).endOf('month'))
         let expenses = lists.filter(x => x.type == 'expenses')
-
+        console.log(expenses);
         return expenses.filter(x => (new Date(x.start) > first && new Date(x.start) < end)).reduce((acc, list) => (acc + list.total), 0)
       }
       return 0
@@ -251,7 +248,7 @@ export default {
         let end = new Date(this.$moment(this.focus).endOf('day'))
         let expenses = lists.filter(x => x.type == 'expenses')
 
-        return expenses.filter(x => (new Date(x.start) > first && new Date(x.start) < end)).reduce((acc, list) => (acc + list.total), 0)
+        return expenses.filter(x => (new Date(x.start) >= first && new Date(x.start) <= end)).reduce((acc, list) => (acc + list.total), 0)
       }
       return 0
     },
