@@ -49,7 +49,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import Swal from 'sweetalert2'
-import { colors, houses, minutes, times } from '@/static/data.json'
+import { houses, minutes, times } from '@/static/data.json'
 export default {
   pageTitle: "",
   toolbarMode: "hide",

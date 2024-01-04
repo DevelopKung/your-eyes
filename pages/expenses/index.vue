@@ -127,10 +127,8 @@ export default {
               Swal.fire({ position: 'top-center', icon: 'success', title: 'ลบสำเร็จ', })
             }
           })
-
         }
       })
-
     },
     startDate(date){
       this.filter.start = this.$moment(date).format('YYYY-MM-DD')
