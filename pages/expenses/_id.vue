@@ -27,14 +27,8 @@
           </v-col>
           <v-col cols="12" sm="9" md="6" class="pb-0">
             <v-row>
-              <v-col cols="12" sm="6" class="py-1 py-sm-2">
+              <v-col cols="12" class="py-1 py-sm-2">
                 <Date-Picker :value="form.date" :title="`เริ่ม`" @update="setDate" :noBtnSave="true"/>
-              </v-col>
-              <v-col cols="6" sm="3" class="py-1 py-sm-2">
-                <v-select v-model="form.house" :items="times.houses" placeholder="ชั่วโมง" item-text="text" item-value="value" outlined dense hide-details></v-select>
-              </v-col>
-              <v-col cols="6" sm="3" class="py-1 py-sm-2">
-                <v-select v-model="form.minutes" :items="times.minutes" placeholder="นาที" item-text="text" item-value="value" outlined dense hide-details></v-select>
               </v-col>
             </v-row>
           </v-col>
@@ -65,9 +59,7 @@ export default {
       form_valid: true,
       valid: [v => !!v || 'กรุณากรอกข้อมูลให้ครบถ้วน'],
       form: {
-        date: this.$moment().format('YYYY-MM-DD'),
-        house: '10',
-        minutes: '00',
+        date: this.$moment().format('YYYY-MM-DD')
       },
       times: {
         houses: houses,
@@ -99,8 +91,6 @@ export default {
       if (res.status == true) {
         this.form = res.payload
         this.form.date = this.$moment(this.form.exp_date).format('YYYY-MM-DD')
-        this.form.house = this.$moment(this.form.exp_date).format('HH')
-        this.form.minutes = this.$moment(this.form.exp_date).format('mm')
       }
       this.loading = false
     },
@@ -109,7 +99,7 @@ export default {
       let params = {
         exp_name, 
         exp_price,
-        exp_date: this.$moment(`${form.date} ${form.house}:${form.minutes}`)
+        exp_date: this.$moment(`${form.date}`)
       }
       if (this.form_valid) {
         if (this.mode == 'new') {

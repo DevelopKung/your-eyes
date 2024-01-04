@@ -26,18 +26,6 @@
           <v-col class="pa-1" cols="12" sm="6">
             <v-card outlined class="pa-4 d-flex justify-space-between align-center rounded-xl">
               <div>
-                <small> <b>รายรับทั้งเดือน</b> </small>
-                <div class="text-left" :class="totalMonthBooking? 'success--text':''"> <b>{{ totalMonthBooking | numeral }}</b> </div>
-              </div>
-              <div>
-                <small> <b>รายจ่ายทั้งเดือน</b> </small>
-                <div class="text-right" :class="totalMonthExpenses? 'error--text':''"> <b>{{ totalMonthExpenses | numeral }}</b> </div>
-              </div>
-            </v-card>
-          </v-col>
-          <v-col class="pa-1" cols="12" sm="6">
-            <v-card outlined class="pa-4 d-flex justify-space-between align-center rounded-xl">
-              <div>
                 <small> <b>ยอดรายรับ </b> </small>
                 <div class="text-left" :class="totalDateBookingNow ? 'success--text':''"> <b>{{ totalDateBookingNow |numeral }}</b> </div>
               </div>
@@ -48,6 +36,18 @@
               <div>
                 <small> <b>ยอดรายจ่าย</b> </small>
                 <div class="text-right" :class="totalDateExpensesNow > 0? 'error--text':''"> <b>{{ totalDateExpensesNow | numeral }}</b> </div>
+              </div>
+            </v-card>
+          </v-col>
+          <v-col class="pa-1" cols="12" sm="6">
+            <v-card outlined class="pa-4 d-flex justify-space-between align-center rounded-xl">
+              <div>
+                <small> <b>รายรับทั้งเดือน</b> </small>
+                <div class="text-left" :class="totalMonthBooking? 'success--text':''"> <b>{{ totalMonthBooking | numeral }}</b> </div>
+              </div>
+              <div>
+                <small> <b>รายจ่ายทั้งเดือน</b> </small>
+                <div class="text-right" :class="totalMonthExpenses? 'error--text':''"> <b>{{ totalMonthExpenses | numeral }}</b> </div>
               </div>
             </v-card>
           </v-col>
@@ -83,7 +83,7 @@
             :interval-count="endTime"
           >
             <template v-slot:event="{event}">
-            <span class="px-2">{{ event.name }}</span>
+              <span class="px-2">{{ event.name }}</span>
             </template>
           </v-calendar>
           <v-calendar 
@@ -97,13 +97,13 @@
             @click:more="viewDay" 
             @click:date="viewDay"
             locale="TH"
-            :interval-format="intervalFormat"
-            :first-interval="firstTime"
-            :interval-minutes="60"
-            :interval-count="endTime"
+            :interval-format="intervalFormatExpenses"
           >
             <template v-slot:event="{event}">
-            <span class="px-2">{{ event.name }}</span>
+              <div class="d-flex justify-space-between">
+                <span class="px-2">{{ event.name }}</span>
+                <span class="px-2">{{ event.total | numeral }} บ.</span>
+              </div>
             </template>
           </v-calendar>
           <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" offset-x>
@@ -194,11 +194,14 @@ export default {
     },
     listsExpenses(){
       let lists = JSON.parse(JSON.stringify(this.calendar))
-      lists = lists.filter(x => x.type == 'expenses').map(x => {
+      lists = lists.filter(x => x.type == 'expenses').map((x,i) => {
         x.start = new Date(x.start)
         x.end = new Date(x.end)
+        x.timed = false
         return x
       })
+
+      console.log(lists);
       return lists
     },
     total(){
@@ -325,6 +328,9 @@ export default {
     intervalFormat(e){
       return e.time
     },
+    intervalFormatExpenses(e){
+      return 
+    },
     setColor(event){
       if (event.type == 'booking') {
         return event.status == 'สำเร็จ' ? 'success': 'warning'
@@ -336,6 +342,9 @@ export default {
         return this.$router.replace(`/booking/${event.id}`)
       }
       return this.$router.replace(`/expenses/${event.id}`)
+    },
+    setDay({event, eventParsed, day}){
+      return event.name
     }
   },
   async created() {
