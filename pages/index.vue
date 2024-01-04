@@ -10,7 +10,8 @@
                   <v-icon small> mdi-chevron-left </v-icon>
                 </v-btn>
 
-                <v-toolbar-title v-if="$refs.calendar"> {{ $refs.calendar.title }} </v-toolbar-title>
+                <v-toolbar-title v-if="tab == 0 && $refs.booking"> {{ $refs.booking.title }} </v-toolbar-title>
+                <v-toolbar-title v-if="tab == 1 && $refs.expenses"> {{ $refs.expenses.title }} </v-toolbar-title>
 
                 <v-btn fab text small color="grey darken-2" @click="next">
                   <v-icon small> mdi-chevron-right </v-icon>
@@ -24,24 +25,52 @@
         <v-row no-gutters>
           <v-col class="pa-1" cols="12" sm="6">
             <v-card outlined class="pa-4 d-flex justify-space-between align-center rounded-xl">
-              <small> <b>ยอดทั้งเดือน</b> </small>
-              <div :class="totalMonth? 'success--text':''"> <b>{{ totalMonth | numeral }}</b> </div>
+              <div>
+                <small> <b>รายรับทั้งเดือน</b> </small>
+                <div class="text-left" :class="totalMonthBooking? 'success--text':''"> <b>{{ totalMonthBooking | numeral }}</b> </div>
+              </div>
+              <div>
+                <small> <b>รายจ่ายทั้งเดือน</b> </small>
+                <div class="text-right" :class="totalMonthExpenses? 'error--text':''"> <b>{{ totalMonthExpenses | numeral }}</b> </div>
+              </div>
             </v-card>
           </v-col>
           <v-col class="pa-1" cols="12" sm="6">
             <v-card outlined class="pa-4 d-flex justify-space-between align-center rounded-xl">
-            <small> <b>ยอดวันที่ {{ new Date(focus).toLocaleDateString('TH') }}</b> </small>
-            <div :class="totalDateNow? 'success--text':'error--text'"> <b>{{ totalDateNow | numeral }}</b> </div>
-          </v-card>
+              <div>
+                <small> <b>ยอดรายรับ </b> </small>
+                <div class="text-left" :class="totalDateBookingNow ? 'success--text':''"> <b>{{ totalDateBookingNow |numeral }}</b> </div>
+              </div>
+              <div class="text-center">
+                <small><b> วันที่ </b></small>
+                <div><b>{{ new Date(focus).toLocaleDateString('TH') }}</b></div>
+              </div>
+              <div>
+                <small> <b>ยอดรายจ่าย</b> </small>
+                <div class="text-right" :class="totalDateExpensesNow > 0? 'error--text':''"> <b>{{ totalDateExpensesNow | numeral }}</b> </div>
+              </div>
+            </v-card>
+          </v-col>
+          <v-col class="pa-1" cols="12" sm="6">
+            <v-card outlined class="pa-4 d-flex justify-space-between align-center rounded-xl">
+              <small> <b>สรุปยอด</b> </small>
+              <div class="text-center" :class="total > 0? 'success--text':'error--text'"> <b>{{ total | numeral }}</b> </div>
+           </v-card>
           </v-col>
         </v-row>
       </v-col>
       <v-col>
+        <v-tabs class="mb-2" v-model="tab"  :color="tab ? 'error': 'success'" grow  >
+          <v-tab> รายรับ </v-tab>
+          <v-tab> รายจ่าย </v-tab>
+        </v-tabs>
+        
         <v-sheet height="600">
-          <v-calendar 
-            ref="calendar" color="primary"
+          <v-calendar
+            v-show="tab == 0" 
+            ref="booking" color="primary"
             v-model="focus"
-            :events="listsCalendar" 
+            :events="listsBooking" 
             :event-color="getEventColor"
             :type="type" 
             @click:event="showEvent" 
@@ -54,7 +83,27 @@
             :interval-count="endTime"
           >
             <template v-slot:event="{event}">
-             <span class="px-2">{{ event.name }}</span>
+            <span class="px-2">{{ event.name }}</span>
+            </template>
+          </v-calendar>
+          <v-calendar 
+            v-show="tab == 1"
+            ref="expenses" color="primary"
+            v-model="focus"
+            :events="listsExpenses" 
+            :event-color="getEventColor"
+            :type="type" 
+            @click:event="showEvent" 
+            @click:more="viewDay" 
+            @click:date="viewDay"
+            locale="TH"
+            :interval-format="intervalFormat"
+            :first-interval="firstTime"
+            :interval-minutes="60"
+            :interval-count="endTime"
+          >
+            <template v-slot:event="{event}">
+            <span class="px-2">{{ event.name }}</span>
             </template>
           </v-calendar>
           <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" offset-x>
@@ -127,46 +176,79 @@ export default {
       colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
       names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
       loading: false,
+      tab: 0
     }
   },
   computed: {
     ...mapGetters({
       calendar: 'service/calendar'
     }),
-    listsCalendar(){
+    listsBooking(){
       let lists = JSON.parse(JSON.stringify(this.calendar))
-      lists = lists.map(x => {
+      lists = lists.filter(x => x.type == 'booking').map(x => {
         x.start = new Date(x.start)
         x.end = new Date(x.end)
         return x
       })
       return lists
     },
-    totalDateNow(){
-      if (this.calendar&&this.calendar.length > 0) {
-        let lists = Object.assign([], this.calendar)
-        let first = new Date(this.$moment(this.focus).startOf('day'))
-        let end = new Date(this.$moment(this.focus).endOf('day'))
-        let booking = lists.filter(x => x.type == 'booking')
-        let expenses = lists.filter(x => x.type == 'expenses')
-
-        expenses = expenses.filter(x => (new Date(x.start) > first && new Date(x.start) < end)).reduce((acc, list) => (acc + list.total), 0)
-        booking = booking.filter(x => (new Date(x.start) > first && new Date(x.start) < end)).reduce((acc, list) => (acc + list.total), 0)
-        return (booking - expenses)
-      }
-      return 0
+    listsExpenses(){
+      let lists = JSON.parse(JSON.stringify(this.calendar))
+      lists = lists.filter(x => x.type == 'expenses').map(x => {
+        x.start = new Date(x.start)
+        x.end = new Date(x.end)
+        return x
+      })
+      return lists
     },
-    totalMonth(){
+    total(){
+      try {
+        return this.totalMonthBooking - this.totalMonthExpenses
+      } catch (error) {
+        return 0 
+      }
+    },
+    totalMonthBooking(){
       if (this.calendar&&this.calendar.length > 0) {
         let lists = Object.assign([], this.calendar)
         let first = new Date(this.$moment(this.focus).startOf('month'))
         let end = new Date(this.$moment(this.focus).endOf('month'))
         let booking = lists.filter(x => x.type == 'booking')
+
+        return booking.filter(x => (new Date(x.start) > first && new Date(x.start) < end)).reduce((acc, list) => (acc + list.total), 0)
+      }
+      return 0
+    },
+    totalMonthExpenses(){
+      if (this.calendar&&this.calendar.length > 0) {
+        let lists = Object.assign([], this.calendar)
+        let first = new Date(this.$moment(this.focus).startOf('month'))
+        let end = new Date(this.$moment(this.focus).endOf('month'))
         let expenses = lists.filter(x => x.type == 'expenses')
 
-        expenses = expenses.filter(x => (new Date(x.start) > first && new Date(x.start) < end)).reduce((acc, list) => (acc + list.total), 0)
-        booking = booking.filter(x => (new Date(x.start) > first && new Date(x.start) < end)).reduce((acc, list) => (acc + list.total), 0)
-        return (booking - expenses)
+        return expenses.filter(x => (new Date(x.start) > first && new Date(x.start) < end)).reduce((acc, list) => (acc + list.total), 0)
+      }
+      return 0
+    },
+    totalDateBookingNow(){
+      if (this.calendar&&this.calendar.length > 0) {
+        let lists = Object.assign([], this.calendar)
+        let first = new Date(this.$moment(this.focus).startOf('day'))
+        let end = new Date(this.$moment(this.focus).endOf('day'))
+        let booking = lists.filter(x => x.type == 'booking')
+
+        return booking.filter(x => (new Date(x.start) > first && new Date(x.start) < end)).reduce((acc, list) => (acc + list.total), 0)
+      }
+      return 0
+    },
+    totalDateExpensesNow(){
+      if (this.calendar&&this.calendar.length > 0) {
+        let lists = Object.assign([], this.calendar)
+        let first = new Date(this.$moment(this.focus).startOf('day'))
+        let end = new Date(this.$moment(this.focus).endOf('day'))
+        let expenses = lists.filter(x => x.type == 'expenses')
+
+        return expenses.filter(x => (new Date(x.start) > first && new Date(x.start) < end)).reduce((acc, list) => (acc + list.total), 0)
       }
       return 0
     },
@@ -188,7 +270,12 @@ export default {
     }
   },
   mounted() {
-    this.$refs.calendar.checkChange()
+    if (this.$refs.booking) {
+      this.$refs.booking.checkChange()
+    }
+    if (this.$refs.expenses) {
+      this.$refs.expenses.checkChange()
+    }
   },
   methods: {
     ...mapActions({
@@ -206,10 +293,12 @@ export default {
       return this.setColor(event)
     },
     prev() {
-      this.$refs.calendar.prev()
+      this.$refs.booking.prev()
+      this.$refs.expenses.prev()
     },
     next() {
-      this.$refs.calendar.next()
+      this.$refs.booking.next()
+      this.$refs.expenses.next()
     },
     showEvent({ nativeEvent, event }) {
       const open = () => {
