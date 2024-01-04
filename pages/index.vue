@@ -59,8 +59,8 @@
           </v-calendar>
           <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" offset-x>
             <v-card flat min-width="200">
-              <v-toolbar :color="selectedEvent.status == 'สำเร็จ' ? 'success': 'warning'" dark>
-                <v-btn icon @click="$router.push(`/booking/${selectedEvent.id}`)">
+              <v-toolbar :color="setColor(selectedEvent)" dark>
+                <v-btn icon @click="edit(selectedEvent)">
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
                 <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
@@ -77,7 +77,7 @@
                 <div v-if="selectedEvent.detail">
                   <span v-if="selectedEvent.detail.lists_name" class="mr-4"> รายการ : {{ selectedEvent.detail.lists_name }} </span>
                 </div>
-                <div v-if="selectedEvent.detail && selectedEvent.detail.lists_total"> ราคา : {{ selectedEvent.detail.lists_total | numeral  }} </div>
+                <div v-if="selectedEvent.detail && selectedEvent.detail.lists_total"> ราคา : {{ selectedEvent.detail.lists_total | numeral }} </div>
                 <div v-if="selectedEvent.mascara"> มาสคาร่า : รับ 29 บ. </div>
                 <div v-if="selectedEvent.detail">
                   <span v-if="selectedEvent.detail.discount"> ส่วนลด : {{ selectedEvent.detail.discount }} </span>
@@ -86,6 +86,8 @@
                 <div v-if="selectedEvent.detail"> ข้อมูลติดต่อ : {{ selectedEvent.detail.social }} </div>
                 <div v-if="selectedEvent.detail"> เบอร์โทร : {{ selectedEvent.detail.phone }} </div>
                 <div v-if="selectedEvent.remark"> หมายเหตุ : {{ selectedEvent.remark }} </div>
+
+                <div  v-if="selectedEvent.total && selectedEvent.type == 'expenses'"> ราคา : {{ selectedEvent.total | numeral }} </div>
               </v-card-text>
             </v-card>
           </v-menu>
@@ -145,7 +147,12 @@ export default {
         let lists = Object.assign([], this.calendar)
         let first = new Date(this.$moment(this.focus).startOf('day'))
         let end = new Date(this.$moment(this.focus).endOf('day'))
-        return lists.filter(x => (new Date(x.start) > first && new Date(x.start) < end)).reduce((acc, list) => (acc + list.total), 0)
+        let booking = lists.filter(x => x.type == 'booking')
+        let expenses = lists.filter(x => x.type == 'expenses')
+
+        expenses = expenses.filter(x => (new Date(x.start) > first && new Date(x.start) < end)).reduce((acc, list) => (acc + list.total), 0)
+        booking = booking.filter(x => (new Date(x.start) > first && new Date(x.start) < end)).reduce((acc, list) => (acc + list.total), 0)
+        return (booking - expenses)
       }
       return 0
     },
@@ -154,7 +161,12 @@ export default {
         let lists = Object.assign([], this.calendar)
         let first = new Date(this.$moment(this.focus).startOf('month'))
         let end = new Date(this.$moment(this.focus).endOf('month'))
-        return lists.filter(x => (new Date(x.start) > first && new Date(x.start) < end)).reduce((acc, list) => (acc + list.total), 0)
+        let booking = lists.filter(x => x.type == 'booking')
+        let expenses = lists.filter(x => x.type == 'expenses')
+
+        expenses = expenses.filter(x => (new Date(x.start) > first && new Date(x.start) < end)).reduce((acc, list) => (acc + list.total), 0)
+        booking = booking.filter(x => (new Date(x.start) > first && new Date(x.start) < end)).reduce((acc, list) => (acc + list.total), 0)
+        return (booking - expenses)
       }
       return 0
     },
@@ -191,7 +203,7 @@ export default {
       this.type = this.type=='month'?'4day':'month'
     },
     getEventColor(event) {
-      return event.status === 'สำเร็จ'? 'success': 'warning'
+      return this.setColor(event)
     },
     prev() {
       this.$refs.calendar.prev()
@@ -224,6 +236,18 @@ export default {
     intervalFormat(e){
       return e.time
     },
+    setColor(event){
+      if (event.type == 'booking') {
+        return event.status == 'สำเร็จ' ? 'success': 'warning'
+      }
+      return 'error'
+    },
+    edit(event){
+      if (event.type == 'booking') {
+        return this.$router.replace(`/booking/${event.id}`)
+      }
+      return this.$router.replace(`/expenses/${event.id}`)
+    }
   },
   async created() {
     this.loading = true

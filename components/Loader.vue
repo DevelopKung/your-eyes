@@ -1,6 +1,6 @@
 <template>
   <v-overlay :value="loading" z-index="999">
-    <div class="loading">
+    <div class="loading pa-2">
       <v-img class="img" src="logo.png" width="100"></v-img>
     </div>
   </v-overlay>

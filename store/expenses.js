@@ -17,20 +17,19 @@ export const mutations = {
 export const actions = {
   async loadData({ state, commit, dispatch }) {
     try {
-      const url = routeAPI.lists.lists;
+      const url = routeAPI.expenses.lists;
       let config = { headers: { Authorization: this.$auth.getToken('local') } }
       const res = await this.$axios.$get(url, config);
       commit('setLists', res.payload)
       return res
     } catch (error) {
-      const res =  { status: false, message: error.response.data || error.message }
-      return res
+      return error.response.data
     }
   },
 
   async loadInfo({ state, commit, dispatch }, id) {
     try {
-      const url = routeAPI.lists.info.replace('{:id}', id);
+      const url = routeAPI.expenses.info.replace('{:id}', id);
       let config = { headers: { Authorization: this.$auth.getToken('local') } }
       const res = await this.$axios.$get(url, config);
       return res
@@ -42,7 +41,8 @@ export const actions = {
 
   async create({ commit, dispatch }, form) {
     try {
-      const url = routeAPI.lists.create;
+      console.log(form);
+      const url = routeAPI.expenses.create;
       let config = { headers: { Authorization: this.$auth.getToken('local') } }
       const res = await this.$axios.$post(url, form, config);
       if (res.status == true) await dispatch("loadData")
@@ -56,7 +56,7 @@ export const actions = {
 
   async update({ commit, dispatch }, { id, form }) {
     try {
-      const url = routeAPI.lists.update.replace('{:id}', id);
+      const url = routeAPI.expenses.update.replace('{:id}', id);
       let config = { headers: { Authorization: this.$auth.getToken('local') } }
       const res = await this.$axios.$post(url, form, config);
       if (res.status == true) await dispatch("loadData")
@@ -69,7 +69,7 @@ export const actions = {
 
   async delete({ commit, dispatch }, id) {
     try {
-      const url = routeAPI.lists.delete.replace('{:id}', id);
+      const url = routeAPI.expenses.delete.replace('{:id}', id);
       let config = { headers: { Authorization: this.$auth.getToken('local') } }
       const res = await this.$axios.$get(url, config);
       if (res.status == true) await dispatch("loadData")

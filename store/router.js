@@ -22,4 +22,11 @@ export default {
     discount: url + 'service/discount',
     calendar: url + 'service/calendar',
   },
+  expenses: {
+    lists: url + 'expenses',
+    info: url + 'expenses/{:id}',
+    update: url + 'expenses/{:id}',
+    create: url + 'expenses',
+    delete: url + 'expenses/d/{:id}',
+  }
 }

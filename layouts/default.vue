@@ -61,7 +61,7 @@
     <v-footer fixed width="100%">
       <v-card width="100%" outlined class="card" >
         <div class="d-flex justify-space-around">
-          <span class="icon" :class="index==1?'icon-center':''" v-for="(menu, index) in menus" :key="index" @click="$router.push(menu.route)">
+          <span class="icon" v-for="(menu, index) in menus" :key="index" @click="$router.push(menu.route)">
             <v-icon :class="activeMenu.menu_code == menu.menu_code?'bg-icon':''" color="primary"> {{ menu.icon }} </v-icon>
           </span>
         </div>

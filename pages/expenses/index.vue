@@ -3,14 +3,11 @@
     <FormFilterBar>
       <v-row>
         <v-col cols="6" sm="4" md="3">
-          <Date-Picker v-if="filter.start" :value="filter.start" :title="`เริ่ม`" @update="startDate" :noBtnSave="true"/>
+          <Date-Picker :value="filter.start" :title="`เริ่ม`" @update="startDate" :noBtnSave="true"/>
         </v-col>
         <v-col cols="6" sm="4" md="3">
-          <Date-Picker v-if="filter.end" :value="filter.end" :title="`สิ้นสุด`" @update="endDate" :noBtnSave="true"/>
+          <Date-Picker :value="filter.end" :title="`สิ้นสุด`" @update="endDate" :noBtnSave="true"/>
         </v-col>
-        <!-- <v-col cols="12" sm="4" md="3">
-          <v-text-field v-model="filter.search" prepend-inner-icon="mdi-magnify" outlined placeholder="ค้นหา" single-line hide-details clearable dense></v-text-field>
-        </v-col> -->
         <v-spacer></v-spacer>
         <v-col cols="12" sm="4" md="3">
           <v-btn color="primary" depressed @click="getData">
@@ -21,37 +18,21 @@
     </FormFilterBar>
     <v-card class="pa-4" outlined style="min-height: 76vh;">
       <div class="mb-4">
-        <v-btn color="primary" depressed @click="$router.push('/booking/new')">
+        <v-btn color="primary" depressed @click="$router.push('/expenses/new')">
           <v-icon left>mdi-plus</v-icon> เพิ่ม
         </v-btn>
       </div>
-      <v-data-table dense :search="filter.search" :headers="dataTable.headers" :items="lists" :items-per-page="30" :footer-props="dataTable.footerProps" :item-class="rowClass"  item-key="id">
+      <v-data-table dense :search="filter.search" :headers="dataTable.headers" :items="lists" :items-per-page="30" :footer-props="dataTable.footerProps" item-key="id">
         <template v-slot:[`item.index`]="{ index }">
           <div>{{ index + 1 }}</div>
         </template>
-        <template v-slot:[`item.booking_lists.lists_price`]="{ item }">
-          <div>{{ item.booking_lists.lists_price | numeral }}</div>
+        <template v-slot:[`item.exp_price`]="{ item }">
+          <div>{{ item.exp_price | numeral }}</div>
         </template>
-        <template v-slot:[`item.booking_total`]="{ item }">
-          <div>{{ item.booking_total | numeral }}</div>
-        </template>
-        <template v-slot:[`item.booking_date`]="{ item }">
-          <span>{{ new Date(item.booking_date.start).toLocaleDateString('TH')}}</span>
-        </template>
-        <template v-slot:[`item.booking_time`]="{ item }">
-          <span>
-            {{ $moment(item.booking_date.start).format('HH:mm') }} - 
-            {{ $moment(item.booking_date.end).format('HH:mm')}}
-          </span>
+        <template v-slot:[`item.exp_date`]="{ item }">
+          <span>{{ new Date(item.exp_date).toLocaleString('TH')}}</span>
         </template>
         <template v-slot:[`item.created_date`]="{ item }">
-          <span>{{ isDate(item.created_date) }}</span>
-        </template>
-        <template v-slot:[`item.booking_discount`]="{ item }" >
-          {{ item.booking_discount.value }} 
-          {{ item.booking_discount.type == 'percent' ? '%': 'บาท' }}
-        </template>
-        <template v-slot:[`item.updated_date`]="{ item }">
           <span>{{ isDate(item.created_date) }}</span>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
@@ -71,14 +52,13 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-// import socket from '@/plugins/socket.io'
 import Swal from 'sweetalert2'
 
 export default {
   pageTitle: "",
   toolbarMode: "hide",
   async validate({ params, query, store }) {
-    const MenuCode = "booking";
+    const MenuCode = "expenses";
     const valid = await store.dispatch("menu/validateRole", MenuCode);
     return valid;
   },
@@ -94,22 +74,16 @@ export default {
   },
   computed: {
     ...mapGetters({
-      lists: 'booking/lists',
+      lists: 'expenses/lists',
     }),
 
     dataTable() {
       return {
         headers: [
           { text: "ลำดับ", value: 'index', sortable: false, width: 10, align: "right" },
-          { text: "ชื่อ", value: 'booking_name', sortable: false, width: 100 },
-          { text: "รายการ", value: 'booking_lists.lists_name', sortable: false, width: 100 },
-          { text: "ราคาเต็ม", value: 'booking_lists.lists_price', sortable: false, width: 100, align: "right" },
-          { text: "ส่วนลด", value: 'booking_discount', sortable: false, width: 100 },
-          { text: "ราคาสุทธิ", value: 'booking_total', sortable: false, width: 100, align: "right" },
-          { text: "วันที่", value: 'booking_date', sortable: false, width: 100 },
-          { text: "เวลา", value: 'booking_time', sortable: false, width: 120 },
-          { text: "สร้างวันที่", value: 'created_date', sortable: false, width: 170 },
-          { text: "แก้ไขวันที่", value: 'updated_date', sortable: false, width: 170 },
+          { text: "รายการ", value: 'exp_name', sortable: false },
+          { text: "ราคา", value: 'exp_price', sortable: false },
+          { text: "วันที่", value: 'exp_date', sortable: false, width: 170 },
           { text: 'ข้อมูล', value: 'actions', sortable: false, width: 150, align: "right" }
         ],
         footerProps: {
@@ -121,12 +95,9 @@ export default {
   },
   methods: {
     ...mapActions({
-      loadData: 'booking/loadData',
-      delete: 'booking/delete',
+      loadData: 'expenses/loadData',
+      delete: 'expenses/delete',
     }),
-    rowClass(item) {
-      return (item.booking_status ===  'สำเร็จ') ? 'bg-success' : 'bg-warning';
-    },
     openForm(id) {
       this.$router.push({ path: this.$route.path + "/" + id })
     },
@@ -179,8 +150,6 @@ export default {
   }
 }
 </script>
-
 <style lang="scss" scoped>
-::v-deep .bg-warning { background-color: #f9a8274a !important; }
-::v-deep .bg-success { background-color: #4caf4f4f !important; }
 </style>
+
