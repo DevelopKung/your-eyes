@@ -46,7 +46,7 @@
                 <div class="text-left" :class="totalMonthBooking? 'success--text':''"> <b>{{ totalMonthBooking | numeral }}</b> </div>
               </div>
               <div>
-                <small> <b>ยอดจอง</b> </small>
+                <small> <b>ยอดจองเดือนนี้</b> </small>
                 <div class="text-center" :class="totalBooking? 'warning--text':''"> <b>{{ totalBooking | numeral }}</b> </div>
               </div>
               <div>
