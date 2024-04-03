@@ -46,6 +46,10 @@
                 <div class="text-left" :class="totalMonthBooking? 'success--text':''"> <b>{{ totalMonthBooking | numeral }}</b> </div>
               </div>
               <div>
+                <small> <b>ยอดจอง</b> </small>
+                <div class="text-center" :class="totalBooking? 'warning--text':''"> <b>{{ totalBooking | numeral }}</b> </div>
+              </div>
+              <div>
                 <small> <b>รายจ่ายทั้งเดือน</b> </small>
                 <div class="text-right" :class="totalMonthExpenses? 'error--text':''"> <b>{{ totalMonthExpenses | numeral }}</b> </div>
               </div>
@@ -213,9 +217,8 @@ export default {
         let lists = Object.assign([], this.calendar)
         let first = new Date(this.$moment(this.focus).startOf('month'))
         let end = new Date(this.$moment(this.focus).endOf('month'))
-        let booking = lists.filter(x => x.type == 'booking')
-
-        return booking.filter(x => (new Date(x.start) > first && new Date(x.start) < end)).reduce((acc, list) => (acc + list.total), 0)
+        let booking = lists.filter(x => x.type == 'booking' && x.status == 'สำเร็จ')
+        return booking.filter(x => (new Date(x.start) >= first && new Date(x.start) <= end)).reduce((acc, list) => (acc + list.total), 0)
       }
       return 0
     },
@@ -225,8 +228,7 @@ export default {
         let first = new Date(this.$moment(this.focus).startOf('month'))
         let end = new Date(this.$moment(this.focus).endOf('month'))
         let expenses = lists.filter(x => x.type == 'expenses')
-        console.log(expenses);
-        return expenses.filter(x => (new Date(x.start) > first && new Date(x.start) < end)).reduce((acc, list) => (acc + list.total), 0)
+        return expenses.filter(x => (new Date(x.start) >= first && new Date(x.start) <= end)).reduce((acc, list) => (acc + list.total), 0)
       }
       return 0
     },
@@ -235,8 +237,7 @@ export default {
         let lists = Object.assign([], this.calendar)
         let first = new Date(this.$moment(this.focus).startOf('day'))
         let end = new Date(this.$moment(this.focus).endOf('day'))
-        let booking = lists.filter(x => x.type == 'booking')
-
+        let booking = lists.filter(x => x.type == 'booking' && x.status == 'สำเร็จ')
         return booking.filter(x => (new Date(x.start) > first && new Date(x.start) < end)).reduce((acc, list) => (acc + list.total), 0)
       }
       return 0
@@ -247,7 +248,6 @@ export default {
         let first = new Date(this.$moment(this.focus).startOf('day'))
         let end = new Date(this.$moment(this.focus).endOf('day'))
         let expenses = lists.filter(x => x.type == 'expenses')
-
         return expenses.filter(x => (new Date(x.start) >= first && new Date(x.start) <= end)).reduce((acc, list) => (acc + list.total), 0)
       }
       return 0
@@ -267,6 +267,13 @@ export default {
         return houses.length + 1
       }
       return 18
+    },
+    totalBooking(){
+      let lists = Object.assign([], this.calendar)
+      let first = new Date(this.$moment(this.focus).startOf('month'))
+      let end = new Date(this.$moment(this.focus).endOf('month'))
+      let booking = lists.filter(x => x.type == 'booking' && x.status == 'จองคิว')
+      return booking.filter(x => (new Date(x.start) >= first && new Date(x.start) <= end)).reduce((acc, list) => (acc + list.total), 0)
     }
   },
   mounted() {
