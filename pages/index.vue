@@ -373,8 +373,10 @@ export default {
             delete params._id
             let result = await this.updateStatus({ id: id, form: params })
             if (result.status) {
+              this.loading = true
               await this.loadDataCalendar()
               await this.$nextTick()
+              this.loading = false
             }
           }
         }
