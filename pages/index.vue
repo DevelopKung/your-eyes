@@ -71,7 +71,6 @@
         
         <v-sheet height="600">
           <v-calendar
-            v-if="!loading"
             v-show="tab == 0" 
             ref="booking" color="primary"
             v-model="focus"
@@ -374,9 +373,8 @@ export default {
             delete params._id
             let result = await this.updateStatus({ id: id, form: params })
             if (result.status) {
-              this.loading = true
               await this.loadDataCalendar()
-              this.loading = false
+              await this.$nextTick()
             }
           }
         }
