@@ -141,11 +141,10 @@
                 <div v-if="selectedEvent.remark"> หมายเหตุ : {{ selectedEvent.remark }} </div>
                 <div  v-if="selectedEvent.total && selectedEvent.type == 'expenses'"> ราคา : {{ selectedEvent.total | numeral }} </div>
 
-                <div v-if="selectedEvent.status == 'จองคิว'" class="d-flex justify-space-between align-end">
-                  <span>เปลี่ยนสถานะ</span>
+                <div v-if="selectedEvent.status == 'จองคิว'" class="text-center mt-4">
                   <div>
                     <v-btn @click="changeStatus(selectedEvent)" outlined color="success" small>
-                      สำเร็จ <v-icon color="success" right>mdi-check-circle-outline</v-icon>
+                      เปลี่ยนสถานะเป็นสำเร็จ <v-icon color="success" right>mdi-check-circle-outline</v-icon>
                     </v-btn>
                   </div>
                 </div>
