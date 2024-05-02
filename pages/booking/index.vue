@@ -6,7 +6,7 @@
           <Date-Picker v-if="filter.start" :value="filter.start" :title="`เริ่ม`" @update="startDate" :noBtnSave="true"/>
         </v-col>
         <v-col cols="6" sm="4" md="3">
-          <Date-Picker v-if="filter.end" :value="filter.end" :title="`สิ้นสุด`" @update="endDate" :noBtnSave="true"/>
+          <Date-Picker v-if="filter.end" :value="filter.end" align="left" :title="`สิ้นสุด`" @update="endDate" :noBtnSave="true"/>
         </v-col>
         <!-- <v-col cols="12" sm="4" md="3">
           <v-text-field v-model="filter.search" prepend-inner-icon="mdi-magnify" outlined placeholder="ค้นหา" single-line hide-details clearable dense></v-text-field>

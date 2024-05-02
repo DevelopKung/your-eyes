@@ -71,6 +71,7 @@
         
         <v-sheet height="600">
           <v-calendar
+            v-if="!loading"
             v-show="tab == 0" 
             ref="booking" color="primary"
             v-model="focus"
@@ -139,8 +140,16 @@
                 <div v-if="selectedEvent.detail"> ข้อมูลติดต่อ : {{ selectedEvent.detail.social }} </div>
                 <div v-if="selectedEvent.detail"> เบอร์โทร : {{ selectedEvent.detail.phone }} </div>
                 <div v-if="selectedEvent.remark"> หมายเหตุ : {{ selectedEvent.remark }} </div>
-
                 <div  v-if="selectedEvent.total && selectedEvent.type == 'expenses'"> ราคา : {{ selectedEvent.total | numeral }} </div>
+
+                <div v-if="selectedEvent.status == 'จองคิว'" class="d-flex justify-space-between align-end">
+                  <span>เปลี่ยนสถานะ</span>
+                  <div>
+                    <v-btn @click="changeStatus(selectedEvent)" outlined color="success" small>
+                      สำเร็จ <v-icon color="success" right>mdi-check-circle-outline</v-icon>
+                    </v-btn>
+                  </div>
+                </div>
               </v-card-text>
             </v-card>
           </v-menu>
@@ -286,7 +295,9 @@ export default {
   },
   methods: {
     ...mapActions({
-      loadDataCalendar: 'service/loadDataCalendar'
+      loadDataCalendar: 'service/loadDataCalendar',
+      loadInfo: 'booking/loadInfo',
+      updateStatus: 'booking/update',
     }),
     viewDay({ date }) {
       this.focus = date
@@ -349,6 +360,31 @@ export default {
     },
     setDay({event, eventParsed, day}){
       return event.name
+    },
+    async changeStatus(object){
+      try {
+        const id = object.id
+        let res = await this.loadInfo(id)
+        if (res.status) {
+          let params = res.payload
+          if (params.booking_status == "จองคิว") {
+            params.booking_status = "สำเร็จ"
+            params.booking_lists_id = params.booking_lists.lists_id
+            delete params.booking_lists
+            delete params._id
+            let result = await this.updateStatus({ id: id, form: params })
+            if (result.status) {
+              this.loading = true
+              await this.loadDataCalendar()
+              this.loading = false
+            }
+          }
+        }
+        this.loading = false
+        this.selectedOpen = false
+      } catch (error) {
+        this.loading = false
+      }
     }
   },
   async created() {

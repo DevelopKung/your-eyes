@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-menu ref="date" v-model="open" :close-on-content-click="false" transition="scale-transition" offset-y min-width="auto" :return-value.sync="date">
+    <v-menu ref="date" v-model="open" :close-on-content-click="false" :right="alignRight" :left="alignLeft" transition="scale-transition" offset-y min-width="auto" :return-value.sync="date">
       <template v-slot:activator="{ on, attrs }">
         <v-text-field
           v-on="on" v-bind="attrs" 
@@ -39,7 +39,8 @@ export default {
     clearable: { type: Boolean, default: false },
     locationIcon: { type: String, default: "right" },
     suffix: { type: String, default: null },
-    noBtnSave: { type: Boolean, default: false }
+    noBtnSave: { type: Boolean, default: false },
+    align: { type: String, default: 'right' },
   },
   data() {
     return {
@@ -56,6 +57,17 @@ export default {
     distpaly() {
       if (this.date) return new Date(this.date).toLocaleDateString('TH')
       return null
+    },
+    alignRight(){
+      if (this.align == 'right') return true
+      return false
+    },
+    alignLeft(){
+      if (this.align == 'left' && this.mobile) return true
+      return false
+    },
+    mobile(){
+      return this.$vuetify.breakpoint.width < 450
     },
   },
   methods: {
