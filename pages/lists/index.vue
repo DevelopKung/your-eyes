@@ -6,11 +6,6 @@
           <v-text-field v-model="filter.search" prepend-inner-icon="mdi-magnify" outlined placeholder="ค้นหา" single-line hide-details clearable dense></v-text-field>
         </v-col>
         <v-spacer></v-spacer>
-        <!-- <v-col cols="12" sm="4" md="3">
-          <v-btn color="primary" depressed block>
-            <v-icon left>mdi-magnify</v-icon> ค้นหา
-          </v-btn>
-        </v-col> -->
       </v-row>
     </FormFilterBar>
     <v-card class="pa-4" outlined style="min-height: 70vh;">
